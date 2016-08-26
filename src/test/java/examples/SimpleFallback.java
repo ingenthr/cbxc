@@ -1,5 +1,6 @@
 package examples;
 
+import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.xc.XCBucket;
 import com.couchbase.client.xc.XCClient;
 
@@ -9,15 +10,27 @@ public class SimpleFallback {
 
     public static void main(String... args) throws Exception {
         XCClient client = new XCClient(Arrays.asList(
-            Arrays.asList("10.142.150.101"), // main cluster
-            Arrays.asList("10.142.150.102")  // fallback cluster
+            // In a real program, these would come from properties.
+            Arrays.asList("centos7lx-1"), // main cluster
+            Arrays.asList("centos7lx-2")  // fallback cluster
         ));
 
         XCBucket bucket = client.openBucket("travel-sample", "");
+        int itercount = 0;
 
         while(true) {
             try {
-                System.out.println(System.currentTimeMillis() + ": " + bucket.get("airline_10"));
+                JsonDocument airline_10 = bucket.get("airline_10");
+                System.out.println(System.currentTimeMillis() + ": " + airline_10);
+                if (itercount %2 == 0) {
+                    airline_10.content().put("was here", "Matt");
+
+                } else {
+                    airline_10.content().put("was here", "Michael");
+                }
+                Thread.sleep(100);
+                bucket.upsert(airline_10);
+                itercount++;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
