@@ -5,9 +5,6 @@ import com.couchbase.client.xc.XCClient;
 
 import java.util.Arrays;
 
-/**
- * Created by daschl on 26/08/16.
- */
 public class SimpleFallback {
 
     public static void main(String... args) throws Exception {
