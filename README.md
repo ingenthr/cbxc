@@ -7,7 +7,7 @@ including transparent failover.
 
 Questions
 ---------
- Q: open replica cluster connections upfront or only on demand?
+ Q: open replica cluster connections upfront or only on demand?  
  A: Up-front so you can identify problems with that cluster connection sooner if needed.
 
 Todos
