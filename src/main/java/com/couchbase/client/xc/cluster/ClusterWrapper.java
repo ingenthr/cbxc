@@ -24,6 +24,18 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Track and respond to cluster events.
+ *
+ * Conceptually, this sets up events on a given cluster and its
+ * underlying nodes, then using the event bus to identify problems
+ * from the local perspective. If for instance all nodes are down,
+ * notify other layers.
+ *
+ * Currently, notifications aren't here for fail-back, but enough
+ * of a model is here that demonstrates how that may be done.
+ *
+ */
 public class ClusterWrapper {
 
     private final CouchbaseCluster cluster;
