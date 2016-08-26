@@ -10,13 +10,14 @@ Questions
  Q: open replica cluster connections upfront or only on demand?  
  A: Up-front so you can identify problems with that cluster connection sooner if needed.
 
-Todos
+TODOs
 -----
- - add full bucket api to XCBucket
- - have separate connect from init (fully async & sync)
- - add async and sync APIs like with the regular API
- - do something about the continuous logging of errors on the downed
+ - Add full bucket api to XCBucket
+ - Have separate connect from init (fully async & sync)
+ - Add async and sync APIs like with the regular API
+ - Do something about the continuous logging of errors on the downed
    cluster (since its noisy after failover)
+ - Test that a network dropoff of a node is detected properly
  
 ```java
 public static void main(String... args) throws Exception {
