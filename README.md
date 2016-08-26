@@ -7,13 +7,14 @@ including transparent failover.
 
 Questions
 ---------
- - open replica cluster connections upfront or only on demand?
+ Q: open replica cluster connections upfront or only on demand?
+ A: Up-front so you can identify problems with that cluster connection sooner if needed.
 
 Todos
 -----
  - add full bucket api to XCBucket
  - have separate connect from init (fully async & sync)
- - add asnyc and sync APIs like with the regular API
+ - add async and sync APIs like with the regular API
  - do something about the continuous logging of errors on the downed
    cluster (since its noisy after failover)
  
