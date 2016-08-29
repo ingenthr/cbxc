@@ -12,12 +12,15 @@ Questions
 
 TODOs
 -----
- - Add full bucket api to XCBucket
- - Have separate connect from init (fully async & sync)
- - Add async and sync APIs like with the regular API
+ - Add full bucket api to XCBucket.
+ - Have separate connect from init (fully async & sync).
+ - Add async and sync APIs like with the regular API.
  - Do something about the continuous logging of errors on the downed
-   cluster (since its noisy after failover)
- - Test that a network dropoff of a node is detected properly
+   cluster (since its noisy after failover).
+ - Test that a network dropoff of a node is detected properly.
+ - Add different strategies for declaring failure, for instance maybe other app servers
+ can't see the cluster and we want them all to fail over.  This should probably be
+ relatively generic here.
  
 ```java
 public static void main(String... args) throws Exception {
