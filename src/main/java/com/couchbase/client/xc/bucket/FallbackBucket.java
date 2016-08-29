@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class FallbackBucket implements XCBucket {
 
     private final AtomicReference<Bucket> currentBucket;
+    private final AtomicReference<Bucket> recoveryBucket;
     private final AtomicReference<ClusterWrapper> currentCluster;
 
     private final List<Bucket> openBuckets;
@@ -59,6 +60,7 @@ public class FallbackBucket implements XCBucket {
         // Set the first one (primary) as current upfront
         this.currentCluster = new AtomicReference<ClusterWrapper>(couchbaseClusters.get(0));
         this.currentBucket = new AtomicReference<Bucket>(openBuckets.get(0));
+        this.recoveryBucket = new AtomicReference<Bucket>(openBuckets.get(1));
 
         currentCluster.get().addCallback(new ClusterWrapper.Callback() {
             @Override
@@ -307,6 +309,11 @@ public class FallbackBucket implements XCBucket {
     @Override
     public <D extends Document<?>> D upsert(D document) {
         return currentBucket.get().upsert(document);
+    }
+
+    @Override
+    public <D extends Document<?>> D upsertRecover(D document) {
+        return recoveryBucket.get().upsert(document);
     }
 
     @Override

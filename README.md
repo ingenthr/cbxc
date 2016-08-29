@@ -21,6 +21,8 @@ TODOs
  - Add different strategies for declaring failure, for instance maybe other app servers
  can't see the cluster and we want them all to fail over.  This should probably be
  relatively generic here.
+ - Ensure tests can start if only the 'remote' cluster is up.  Right now it fails if
+ the primary is down.
  
 ```java
 public static void main(String... args) throws Exception {

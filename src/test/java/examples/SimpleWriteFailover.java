@@ -8,7 +8,7 @@ import com.couchbase.client.xc.XCClient;
 
 import java.util.Arrays;
 
-public class SimpleFallback {
+public class SimpleWriteFailover {
 
     public static void main(String... args) throws Exception {
 //        CouchbaseEnvironment env = DefaultCouchbaseEnvironment.builder().mutationTokensEnabled(true).build();
@@ -37,13 +37,20 @@ public class SimpleFallback {
             getSuccess = false; setSuccess= false;
             try {
                 airline_10.content().put("was here at", now);
-                bucket.upsert(airline_10);
+                airline_10 = bucket.upsert(airline_10);
                 setSuccess = true;
-                airline_10 = bucket.get("airline_10");
-                getSuccess = true;
                 System.out.println(now + ": " + airline_10);
-                Thread.sleep(100);
                 itercount++;
+            } catch (RuntimeException ex) {
+                // Arrive here on failed upserts
+                // Note that the programming model of the client is to try to complete an operation until timeout, so
+                // it will take longer for the operation.  The FallbackBucket encapsulates a place where a declared
+                // failure, either by the event bus or heuristics, can allow for failover to maintain
+                // throughput and latency in a failure case.
+                System.err.println("Writing to alternate cluster for later recovery.");
+                airline_10 = bucket.upsertRecover(airline_10);
+                System.out.println(now + ": " + airline_10);
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             } 

@@ -46,11 +46,17 @@ public class ClusterWrapper {
     private final List<Callback> callbacks;
 
     public ClusterWrapper(List<String> bootstrap) {
+        this(null, bootstrap);
+    }
+
+    public ClusterWrapper(CouchbaseEnvironment env, List<String> bootstrap) {
+        if (env == null) {
+            env = DefaultCouchbaseEnvironment.create();
+        }
         callbacks = new CopyOnWriteArrayList<Callback>();
         clusterHosts = new AtomicReference<Set<InetAddress>>(new HashSet<InetAddress>());
         connectedHosts = new ConcurrentSet<InetAddress>();
 
-        CouchbaseEnvironment env = DefaultCouchbaseEnvironment.create();
 
         env.eventBus()
             .get()
